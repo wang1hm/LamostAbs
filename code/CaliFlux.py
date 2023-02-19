@@ -56,23 +56,37 @@ num = len(data)
 fig, ax = plt.subplots(2,1)
 
 Emission_name = ['Ha','Hb','MgII','[OIII]',' ','[NII]',' ','[SII]',' ','CIII','CIV','Lya']
-Emission_wave = [6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216]*(1.+redshift[i])
+#Emission_wave = [6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216]*(1.+redshift[i])
 
-SDSS_path = './Filter/SDSS/'
-mag_sdss_g = pd.read_csv(SDSS_path+'g.dat')
-mag_sdss_r = pd.read_csv(SDSS_path+'r.dat')
-mag_sdss_i = pd.read_csv(SDSS_path+'i.dat')
-mag_sdss_z = pd.read_csv(SDSS_path+'z.dat')
-mag_sdss_g.iloc=lam_g*10.
-lam_r=lam_r*10.
-lam_i=lam_i*10.
-lam_z=lam_z*10.
+SDSS_path = './Huimei/Filter/SDSS/'
+mag_sdss_g = pd.read_csv(SDSS_path+'g.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_sdss_g = mag_sdss_g.drop(labels = 'Del',axis=1)
+mag_sdss_r = pd.read_csv(SDSS_path+'r.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_sdss_r = mag_sdss_r.drop(labels = 'Del',axis=1)
+mag_sdss_i = pd.read_csv(SDSS_path+'i.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_sdss_i = mag_sdss_i.drop(labels = 'Del',axis=1)
+mag_sdss_z = pd.read_csv(SDSS_path+'z.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_sdss_z = mag_sdss_z.drop(labels = 'Del',axis=1)
+mag_sdss_g['lam_g']=mag_sdss_g['lam_g']*10.
+mag_sdss_r['lam_g']=mag_sdss_r['lam_g']*10.
+mag_sdss_i['lam_g']=mag_sdss_i['lam_g']*10.
+mag_sdss_z['lam_g']=mag_sdss_z['lam_g']*10.
 
-Pstr_path = './Filter/Panstarr/'
-mag_pstr_g = pd.read_csv(Pstr_path+'g.dat')
-mag_pstr_r = pd.read_csv(Pstr_path+'r.dat')
-mag_pstr_i = pd.read_csv(Pstr_path+'i.dat')
-mag_pstr_z = pd.read_csv(Pstr_path+'z.dat')
+PSTR_path = './Huimei/Filter/Panstarr/'
+mag_pstr_g = pd.read_csv(PSTR_path+'g.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_pstr_g = mag_pstr_g.drop(labels = 'Del',axis=1)
+mag_pstr_r = pd.read_csv(PSTR_path+'r.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_pstr_r = mag_pstr_r.drop(labels = 'Del',axis=1)
+mag_pstr_i = pd.read_csv(PSTR_path+'i.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_pstr_i = mag_pstr_i.drop(labels = 'Del',axis=1)
+mag_pstr_z = pd.read_csv(PSTR_path+'z.dat',names=['Del','lam_g','RC_g'],sep=' ')
+mag_pstr_z = mag_pstr_z.drop(labels = 'Del',axis=1)
+mag_pstr_g['lam_g']=mag_pstr_g['lam_g']*10.
+mag_pstr_r['lam_g']=mag_pstr_r['lam_g']*10.
+mag_pstr_i['lam_g']=mag_pstr_i['lam_g']*10.
+mag_pstr_z['lam_g']=mag_pstr_z['lam_g']*10.
 
-def RedBlue(p):
+def RedBlue(p,z,photometry):
+    Emission_wave = np.array([6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216])*(1.+z)
     
+
