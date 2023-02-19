@@ -31,8 +31,8 @@ function cmd,p
 end
 """
 
-
-float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z;,sdss_effec_wave
+#sdss_effec_wave
+float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z
 
 def cmd(p):
     #sdss_effec_wave = [4686.,6165.,7481.,8931.]
@@ -74,4 +74,5 @@ mag_pstr_r = pd.read_csv(Pstr_path+'r.dat')
 mag_pstr_i = pd.read_csv(Pstr_path+'i.dat')
 mag_pstr_z = pd.read_csv(Pstr_path+'z.dat')
 
-if data['together'][i] == 0:
+def RedBlue(p):
+    
