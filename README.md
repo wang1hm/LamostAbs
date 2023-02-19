@@ -33,7 +33,7 @@ SELECT
   m.radeg AS ra1, m.decdeg AS dec1, n.distance,
   o.ra AS ra2, o.dec AS dec2,o.petroMag_g AS Petro_g,o.petroMag_r AS Petro_r,o.petroMag_i AS Petro_i
   FROM MyDB.DATA AS m
-  OUTER APPLY dbo.fGetNearestObjEq( m.radeg, m.decdeg, 0.3) AS n
+  OUTER APPLY dbo.fGetNearestObjEq(m.radeg, m.decdeg, 3.0/60.) AS n
   LEFT JOIN PhotoObj AS o ON n.objid=o.objid
 
 ```
