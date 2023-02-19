@@ -9,8 +9,12 @@
 ##  crossmatch with SDSS
 - upload LAMOST QSO catalog
 
+[sdss.china-vo casjob](http://sdss.china-vo.org/casjobs/MyDB.aspx)
 
-- crossmatch and get Mag_g,Mag_r,Mag_i  or OIII5007 NLR 
+[sdss casjob](http://skyserver.sdss.org/casjobs/MyDB.aspx)
+
+
+- crossmatch and get Mag_g,Mag_r,Mag_i or [OIII]5007 
 
 
 - download data
