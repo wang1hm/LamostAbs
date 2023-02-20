@@ -79,6 +79,12 @@ LAMOST的光谱数据在官网上下载的。
 
 # do calibration in prep
 
+LAMOST光谱流量定标
+
+## 使用测光数据进行流量定标：1）由于LAMOST的波长覆盖范围有限，所以只用到了gri三个波段，这三个波段可以在SDSS或者Pan-starr上获得。2）用SDSS（或者Pan-starr）的透过率曲线去卷积LAMOST光谱，就得到了对应的单色光度，用这个光谱去拟合在SDSS（或者Pan-starr）上得到的实际光度，就可以实现流量定标。
+
+## 利用窄发射线做流量定标:这种方法是假设AGN的某些窄发射线是不发生变化的，将某个光谱乘上一个值，是的其窄线的flux和另一条光谱一致，就完成了流量定标，一般用到的窄线是[OIII]5007.
+
 - CaliFlux.py
 
 - CaliFlux_with_SDSS_mag.py
