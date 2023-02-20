@@ -73,4 +73,14 @@ def RedBlue(p,z,photometry,name):
     lam = specdata[0].data[2]
     andmask = specdata[0].data[3]
     ormask = specdata[0].data[4]
+    err = 1./np.sqrt(ivar)
+    wave_index1 = np.where((3900<lam) &(lam < 4100))
+    wave_index2 = np.where((7900<lam) &(lam < 8100))
+    flux1        = median(flux[wave_index1])
+    flux2        = median(flux[wave_index2])
+    flux_max     = max([flux1,flux2])
+    flux_min     = min([flux1,flux2])
+    lam_min=int(min(lam))+1
+    lam_max=int(max(lam))
+    lam_bin=indgen(lam_max-lam_min)+lam_min
 
