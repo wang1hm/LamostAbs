@@ -66,12 +66,14 @@ mag_pstr_z = pd.read_csv(Pstr_path+'z.dat')
 [LAMOST spectra](http://www.lamost.org/lmusers/)
 LAMOST的光谱数据在官网上下载的。
 选择某个DR，然后选择low resolution
+
 [LAMOST dr9](http://www.lamost.org/dr9/v1.1/search)
 这里就可以直接用ra，dec进行下载了。
 
 
 # download SDSS spectra
 [dr16.sdss](https://dr16.sdss.org/optical/spectrum/search)
+
 [dr17.sdss](https://dr17.sdss.org/optical/spectrum/search)
 
 
