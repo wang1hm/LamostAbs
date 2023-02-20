@@ -18,19 +18,6 @@ COLOR = ['#5f160d','#d85c47','#cf4733','#f26c28','#f7986c','#f3b63e',
        '#b873f1','#8224f3','#e0aaf2','#f224f3','#eb89a8','#ef3762',
        '#696969','#ff0030']
 
-#Base on IDL code
-""""
-function cmd,p
-   common LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z;,sdss_effec_wave
-   ;sdss_effec_wave = [4686.,6165.,7481.,8931.]
-   flux_fit = dblarr(3)
-   flux_fit[0]   = SumFlux_g*p(0)
-   flux_fit[1:2] =[SumFlux_r,SumFlux_i]*p(1)
-   print,flux_fit
-   return,flux_fit
-end
-"""
-
 #sdss_effec_wave
 float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z
 
@@ -41,14 +28,6 @@ def cmd(p):
     flux_fit[1:2] =[SumFlux_r,SumFlux_i]*p[1]
     print(flux_fit)
     return flux_fit
-
-"""
-;---------------read Filter-------------------
-readcol,'test.dat',basename,obsid,RA,DEC,psfMag_g,psfMag_r,psfMag_i,psfMag_z,psfMagErr_g,psfMagErr_r,psfMagErr_i,psfMagErr_z,together,Photometry,redshift,f='(a,d,d,d,d,d,d,d,d,d,d,d,x,a,a,d)'
-
-num             = n_elements(basename)
-
-"""
 
 data = pd.read_csv('./dr45_match_file.csv')
 num = len(data)
