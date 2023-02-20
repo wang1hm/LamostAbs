@@ -86,7 +86,12 @@ mag_pstr_r['lam_g']=mag_pstr_r['lam_g']*10.
 mag_pstr_i['lam_g']=mag_pstr_i['lam_g']*10.
 mag_pstr_z['lam_g']=mag_pstr_z['lam_g']*10.
 
-def RedBlue(p,z,photometry):
+def RedBlue(p,z,photometry,name):
     Emission_wave = np.array([6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216])*(1.+z)
-    
+    specdata = fits.open('Volumes/My_Passport/Calibration/lamost_dr45/'+name+'.fits.gz')
+    flux = specdata[0].data[2]#1e-17
+    ivar = specdata[0].data[1]
+    lam = specdata[0].data[2]
+    andmask = specdata[0].data[3]
+    ormask = specdata[0].data[4]
 
