@@ -10,6 +10,7 @@ import os
 import shutil
 import wget
 import ftplib
+from scipy.interpolate import interp1d as sp_interp1d
 #from QSOFit import QSOFit
 COLOR = ['#5f160d','#d85c47','#cf4733','#f26c28','#f7986c','#f3b63e',
        '#ffbb00','#fde24a','#fff988','#c5e127','#affd4a','#74d012',
@@ -40,13 +41,13 @@ def read_mag(photometry):
     if photometry == 'SDSS':
         SDSS_path = './Huimei/Filter/SDSS/'
         mag_sdss_g = pd.read_csv(SDSS_path+'g.dat',names=['Del','lam_g','RC_g'],sep=' ')
-        lam_g = mag_sdss_g['lam_g']
+        lam_g, RC_g = mag_sdss_g['lam_g'],mag_sdss_g['RC_g']
         mag_sdss_r = pd.read_csv(SDSS_path+'r.dat',names=['Del','lam_r','RC_r'],sep=' ')
-        lam_r = mag_sdss_r['lam_r']
+        lam_r, RC_r = mag_sdss_r['lam_r'],mag_sdss_r['RC_r']
         mag_sdss_i = pd.read_csv(SDSS_path+'i.dat',names=['Del','lam_i','RC_i'],sep=' ')
-        lam_i = mag_sdss_i['lam_i']
+        lam_i, RC_i = mag_sdss_i['lam_i'],mag_sdss_i['RC_i']
         mag_sdss_z = pd.read_csv(SDSS_path+'z.dat',names=['Del','lam_z','RC_z'],sep=' ')
-        lam_z = mag_sdss_z['lam_z']
+        lam_z, RC_z = mag_sdss_z['lam_z'],mag_sdss_z['RC_z']
         lam_g=lam_g*10.
         lam_r=lam_r*10.
         lam_i=lam_i*10.
@@ -54,23 +55,23 @@ def read_mag(photometry):
     if photometry == 'Panstarr':
         PSTR_path = './Huimei/Filter/Panstarr/'
         mag_pstr_g = pd.read_csv(PSTR_path+'g.dat',names=['Del','lam_g','RC_g'],sep=' ')
-        lam_g = mag_ptsr_g['lam_g']
+        lam_g, RC_g = mag_ptsr_g['lam_g'],mag_ptsr_g['RC_g']
         mag_pstr_r = pd.read_csv(PSTR_path+'r.dat',names=['Del','lam_r','RC_r'],sep=' ')
-        lam_r = mag_ptsr_r['lam_r']
+        lam_r, RC_r = mag_ptsr_r['lam_r'],mag_ptsr_r['RC_r']
         mag_pstr_i = pd.read_csv(PSTR_path+'i.dat',names=['Del','lam_i','RC_i'],sep=' ')
-        lam_i = mag_ptsr_i['lam_i']
+        lam_i, RC_i = mag_ptsr_i['lam_i'],mag_ptsr_i['RC_i']
         mag_pstr_z = pd.read_csv(PSTR_path+'z.dat',names=['Del','lam_z','RC_z'],sep=' ')
-        lam_z = mag_ptsr_z['lam_z']
+        lam_z, RC_z = mag_ptsr_z['lam_z'],mag_ptsr_z['RC_z']
         lam_g=lam_g*10.
         lam_r=lam_r*10.
         lam_i=lam_i*10.
         lam_z=lam_z*10.
-    return lam_g, lam_r, lam_i, lam_z
+    return lam_g, lam_r, lam_i, lam_z, RC_g, RC_r, RC_i, RC_z
 
 def RedBlue(p,z,photometry,name):
     Emission_wave = np.array([6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216])*(1.+z)
     specdata = fits.open('Volumes/My_Passport/Calibration/lamost_dr45/'+name+'.fits.gz')
-    lam_g, lam_r, lam_i, lam_z = read_mag(photometry)
+    lam_g, lam_r, lam_i, lam_z, RC_g, RC_r, RC_i, RC_z = read_mag(photometry)
     flux = specdata[0].data[2]#1e-17
     ivar = specdata[0].data[1]
     lam = specdata[0].data[2]
@@ -91,4 +92,12 @@ def RedBlue(p,z,photometry,name):
     lam_bin_r = lam_bin[np.where((min(lam_r)<lam_bin)&(lam_bin < max(lam_r)))]
     lam_bin_i = lam_bin[np.where((min(lam_i)<lam_bin)&(lam_bin < max(lam_i)))]
     lam_bin_z = lam_bin[np.where((min(lam_z)<lam_bin)&(lam_bin < max(lam_z)))]
+    f_g = sp_interp1d(lam_g, RC_g)
+    RC_g_bin = f_g(lam_bin_g)
+    f_r = sp_interp1d(lam_r, RC_r)
+    RC_r_bin = f_r(lam_bin_r)
+    f_i = sp_interp1d(lam_i, RC_i)
+    RC_i_bin = f_i(lam_bin_i)
+    f_z = sp_interp1d(lam_z, RC_z)
+    RC_i_bin = f_z(lam_bin_z)
 
