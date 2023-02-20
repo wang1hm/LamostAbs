@@ -63,6 +63,10 @@ mag_pstr_z = pd.read_csv(Pstr_path+'z.dat')
 
 # download LAMOST spectra
 
+LAMOST QSO candidate由两部分，一系列文章里面都有提到。  
+
+一个是lamost pipeline分类为qso的源，一个是和组里的输入星表（组里选的quasar候选体）的源。
+
 [LAMOST spectra](http://www.lamost.org/lmusers/)
 LAMOST的光谱数据在官网上下载的。
 选择某个DR，然后选择low resolution
