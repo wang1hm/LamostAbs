@@ -69,8 +69,10 @@ def read_mag(photometry):
     return lam_g, lam_r, lam_i, lam_z, RC_g, RC_r, RC_i, RC_z
 
 def RedBlue(p,z,photometry,name):
+    #read the data
+    specdata = fits.open('/Volumes/My_Passport/Calibration/lamost_dr45/'+name+'.fits.gz')
     Emission_wave = np.array([6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216])*(1.+z)
-    specdata = fits.open('Volumes/My_Passport/Calibration/lamost_dr45/'+name+'.fits.gz')
+    
     lam_g, lam_r, lam_i, lam_z, RC_g, RC_r, RC_i, RC_z = read_mag(photometry)
     flux = specdata[0].data[2]#1e-17
     ivar = specdata[0].data[1]
@@ -80,18 +82,21 @@ def RedBlue(p,z,photometry,name):
     err = 1./np.sqrt(ivar)
     wave_index1 = np.where((3900<lam) &(lam < 4100))
     wave_index2 = np.where((7900<lam) &(lam < 8100))
-    flux1        = median(flux[wave_index1])
-    flux2        = median(flux[wave_index2])
+    flux1 = np.median(flux[wave_index1])
+    flux2 = np.median(flux[wave_index2])
     flux_max     = max([flux1,flux2])
     flux_min     = min([flux1,flux2])
     lam_min=int(min(lam))+1
     lam_max=int(max(lam))
     lam_bin=np.arange(0,lam_max-lam_min,1)+lam_min
+
     #set the bin for griz band
     lam_bin_g = lam_bin[np.where((min(lam_g)<lam_bin)&(lam_bin < max(lam_g)))]
     lam_bin_r = lam_bin[np.where((min(lam_r)<lam_bin)&(lam_bin < max(lam_r)))]
     lam_bin_i = lam_bin[np.where((min(lam_i)<lam_bin)&(lam_bin < max(lam_i)))]
     lam_bin_z = lam_bin[np.where((min(lam_z)<lam_bin)&(lam_bin < max(lam_z)))]
+
+    #set the bin for RC
     f_g = sp_interp1d(lam_g, RC_g)
     RC_g_bin = f_g(lam_bin_g)
     f_r = sp_interp1d(lam_r, RC_r)
@@ -99,5 +104,16 @@ def RedBlue(p,z,photometry,name):
     f_i = sp_interp1d(lam_i, RC_i)
     RC_i_bin = f_i(lam_bin_i)
     f_z = sp_interp1d(lam_z, RC_z)
-    RC_i_bin = f_z(lam_bin_z)
+    RC_z_bin = f_z(lam_bin_z)
+
+    f_fl = sp_interp1d(lam,flux)
+    flux_bin_g = f_fl(lam_bin_g)
+    flux_bin_r = f_fl(lam_bin_r)
+    flux_bin_i = f_fl(lam_bin_i)
+    flux_bin_z = f_fl(lam_bin_z)
+
+    SumFlux_g   = np.sum(RC_g_bin*flux_bin_g)/np.sum(RC_g_bin)
+    SumFlux_r   = np.sum(RC_r_bin*flux_bin_r)/np.sum(RC_r_bin)
+    SumFlux_i   = np.sum(RC_i_bin*flux_bin_i)/np.sum(RC_i_bin)
+    SumFlux_z   = np.sum(RC_z_bin*flux_bin_z)/np.sum(RC_z_bin)
 
