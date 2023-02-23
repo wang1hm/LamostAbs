@@ -23,13 +23,13 @@ COLOR = ['#5f160d','#d85c47','#cf4733','#f26c28','#f7986c','#f3b63e',
 #sdss_effec_wave
 float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z
 
-def cmd(p):
+
+def cmd(flux_fit,p0,p1):
     #sdss_effec_wave = [4686.,6165.,7481.,8931.]
-    flux_fit = np.zeros(3)
-    flux_fit[0]   = SumFlux_g*p[0]
-    flux_fit[1:2] =[SumFlux_r,SumFlux_i]*p[1]
-    print(flux_fit)
-    return flux_fit
+    res = np.zeros(3)
+    res[0]   = flux_fit[0]*p0
+    res[1:3] = np.array(flux_fit[1:3])*p1
+    return res
 
 data = pd.read_csv('./dr45_match_file.csv',names=['basename','obsid','RA','DEC','psfMag_g',/
         'psfMag_r','psfMag_i','psfMag_z','psfMagErr_g','psfMagErr_r','psfMagErr_i','psfMagErr_z',/
@@ -173,7 +173,7 @@ def RedBlue(mag,mag_err,z,photometry,name):
     Res_data[3] = Res_andmask
     Res_data[4] = Res_ormask
     
-    return Res_data
+    return Res_data, arr_f1
 
 
 
