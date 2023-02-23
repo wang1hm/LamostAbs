@@ -10,6 +10,7 @@ import os
 import shutil
 import wget
 import ftplib
+
 from scipy.interpolate import interp1d as sp_interp1d
 from scipy.optimize import curve_fit
 #from QSOFit import QSOFit
@@ -21,7 +22,7 @@ COLOR = ['#5f160d','#d85c47','#cf4733','#f26c28','#f7986c','#f3b63e',
        '#696969','#ff0030']
 
 #sdss_effec_wave
-float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z
+#float LAMOSTspec,SumFlux_g,SumFlux_r,SumFlux_i,SumFlux_z
 
 
 def cmd(flux_fit,p0,p1):
@@ -31,14 +32,7 @@ def cmd(flux_fit,p0,p1):
     res[1:3] = np.array(flux_fit[1:3])*p1
     return res
 
-data = pd.read_csv('./dr45_match_file.csv',names=['basename','obsid','RA','DEC','psfMag_g',/
-        'psfMag_r','psfMag_i','psfMag_z','psfMagErr_g','psfMagErr_r','psfMagErr_i','psfMagErr_z',/
-        'together','Photometry','redshift','f'])
-num = len(data)
-
-fig, ax = plt.subplots(2,1)
-
-Emission_name = ['Ha','Hb','MgII','[OIII]',' ','[NII]',' ','[SII]',' ','CIII','CIV','Lya']
+#Emission_name = ['Ha','Hb','MgII','[OIII]',' ','[NII]',' ','[SII]',' ','CIII','CIV','Lya']
 #Emission_wave = [6563.,4861.,2798,4959,5007,6548,6584,6716,6731,1909,1549,1216]*(1.+redshift[i])
 def read_mag(photometry):
     if photometry == 'SDSS':
@@ -175,7 +169,22 @@ def RedBlue(mag,mag_err,z,photometry,name):
     
     return Res_data, arr_f1
 
+data = pd.read_csv('./02_Calibration/dr45_match_file.csv',names=['basename','obsid','RA','DEC','psfMag_g',\
+        'psfMag_r','psfMag_i','psfMag_z','psfMagErr_g','psfMagErr_r','psfMagErr_i','psfMagErr_z',\
+        'together','Photometry','redshift','f'])
+data=data.drop(0)
+data=data.reset_index(drop=False)
+#num = len(data)-lam_min
+for i in [5,6,7,8,9,10,11,12,15]:
+    data.iloc[:,i]=pd.to_numeric(data.iloc[:,i])
 
-
-    #write to fits
-    Res_data.writeto('./dr45_cali/spec'+name+'-cali.fits')
+#pd.to_numeric(data.iloc[:,5])
+mag = data.iloc[0][5:9]
+mag_err = data.iloc[0][9:13]
+#p = data['redshift'][0]
+z = data['redshift'][0]
+photometry = data['Photometry'][0]
+name = data['basename'][0]
+Res,arr_f1 = RedBlue(mag,mag_err,z,photometry,str(name))
+plt.plot(Res[2],Res[0],zorder = 0)
+plt.scatter([4686.,6165.,7481.],arr_f1,c='r',zorder=1)
