@@ -2,9 +2,7 @@
 
 Absolute flux calibration for LAMOST Low Resolution Spectral (LRS) data.
 
-- try to change
-
-- Python version to re-calibrate the LAMOST spectra with the SDSS/PanSTARRS1 multi-band photometric data （see reference from [LAMOST Quasar Survey](https://ui.adsabs.harvard.edu/abs/2022arXiv221212876J/abstract)）
+This is the Python realization of the re-calibrating procedure for the LAMOST spectra with the SDSS/PanSTARRS1 multi-band photometric data（see reference from [LAMOST Quasar Survey DR6-9 (Jin et al. 2023)](https://ui.adsabs.harvard.edu/abs/2022arXiv221212876J/abstract)）
 
 
 # pipeline
