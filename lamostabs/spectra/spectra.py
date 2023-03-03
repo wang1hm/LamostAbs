@@ -18,6 +18,8 @@ from astropy import units as u
 import warnings
 from astropy.units import Quantity
 
+__all__ = ['LowResSpec']
+
 class LowResSpec():
     def __init__(self, wave, flux, err, z=None, ra=None, dec=None, plateid=None, 
                  mjd=None, fiberid=None, and_mask=None, or_mask=None):
