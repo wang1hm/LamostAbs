@@ -1,6 +1,6 @@
 # LamostAbs
 
-Absolute flux calibration for LAMOST Low-Resolution Spectroscopy
+Absolute flux calibration for LAMOST Low Resolution Spectral (LRS) data.
 
 - try to change
 
