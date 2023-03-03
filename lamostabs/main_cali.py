@@ -1,4 +1,4 @@
-from qsofitmore import QSOFitNew
+# from qsofitmore import QSOFitNew
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -7,7 +7,6 @@ from astropy.io import fits
 import glob
 import os
 import shutil
-import wget
 import ftplib
 import CaliFlux
 
