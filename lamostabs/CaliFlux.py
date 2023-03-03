@@ -155,7 +155,9 @@ def RedBlue(mag,mag_err,z,photometry,name):
 
     Res_lam = np.hstack((lam_blue,lam_red))
     Res_flux = np.hstack((flux[index_blue]*params[0],flux[index_red]*params[1]))
-    Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[1]**2.)))
+    #make the S/N in red part same with the blue part
+    #Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[1]**2.)))
+    Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[0]**2.)))
     #Res_ivar = np.hstack((ivar[index_blue],ivar[index_red]))
     #Res_ivar = [ivar[index_blue]/(params[0]^2.),ivar[index_red]/(params[1]^2.)]
     index_ivar0 = np.where(Res_ivar == 0)
@@ -173,28 +175,7 @@ def RedBlue(mag,mag_err,z,photometry,name):
     Res_data[4] = Res_ormask
     
     return Res_data, arr_f1, lam_blue, lam_red
-""""
-data_path = './02_Calibration/dr45_match_file.csv'
-data = pd.read_csv(data_path,names=['basename','obsid','RA','DEC','psfMag_g',\
-        'psfMag_r','psfMag_i','psfMag_z','psfMagErr_g','psfMagErr_r','psfMagErr_i','psfMagErr_z',\
-        'together','Photometry','redshift','f'])
-data=data.drop(0)
-data=data.reset_index(drop=False)
-#num = len(data)-lam_min
-for i in [5,6,7,8,9,10,11,12,15]:
-    data.iloc[:,i]=pd.to_numeric(data.iloc[:,i])
 
-#pd.to_numeric(data.iloc[:,5])
-mag = data.iloc[0][5:9]
-mag_err = data.iloc[0][9:13]
-#p = data['redshift'][0]
-z = data['redshift'][0]
-photometry = data['Photometry'][0]
-name = data['basename'][0]
-Res,arr_f1 = RedBlue(mag,mag_err,z,photometry,str(name))
-plt.plot(Res[2],Res[0],zorder = 0)
-plt.scatter([4686.,6165.,7481.],arr_f1,c='r',zorder=1)
-"""
 def cmd_together(flux_fit,p):
     #sdss_effec_wave = [4686.,6165.,7481.,8931.]
     res = np.zeros(3)
