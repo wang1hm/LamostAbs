@@ -21,8 +21,37 @@ from astropy.units import Quantity
 __all__ = ['LowResSpec']
 
 class LowResSpec():
+    """A class for LAMOST Low Resolution Spectral (LRS) data.
+    """
     def __init__(self, wave, flux, err, z=None, ra=None, dec=None, plateid=None, 
                  mjd=None, fiberid=None, and_mask=None, or_mask=None):
+        """Initialize the LowResSpec object.
+
+        Parameters
+        ----------
+        wave : 1-D np.array
+            Wavelength axis of the spectrum
+        flux : 1-D np.array
+            (Relative) flux density of the spectrum
+        err : 1-D np.array
+            (Relative) flux error (one sigma) of the spectrum
+        z : float, optional
+            Redshift, by default None
+        ra : float, optional
+            Right ascension of the object, by default None
+        dec : float, optional
+            Declination of the object, by default None
+        plateid : int, optional
+            LAMOST plateid of the object, by default None
+        mjd : int, optional
+            MJD of the observation, by default None
+        fiberid : int, optional
+            LAMOST fiberid of the object, by default None
+        and_mask : 1-D np.array, optional
+            And mask of the flux, by default None
+        or_mask : 1-D np.array, optional
+            Or mask of the flux, by default None
+        """
         self.wave = np.asarray(wave, dtype=np.float64)
         self.flux = np.asarray(flux, dtype=np.float64)
         self.err = np.asarray(err, dtype=np.float64)
@@ -40,6 +69,18 @@ class LowResSpec():
 
     @classmethod
     def load(cls, fname):
+        """Load the low resolution spectrum from fits file.
+
+        Parameters
+        ----------
+        fname : str
+            Name (path) of the fits file
+
+        Returns
+        -------
+        object
+            An instance of LowResSpec class.
+        """
         hdu = fits.open(fname)
         header = hdu[0].header
         ra=header['RA']
