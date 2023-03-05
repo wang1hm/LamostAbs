@@ -9,21 +9,21 @@ import pandas as pd
 
 
 class SDSSQuery():
-    """_summary_
+    """Class for querying the SDSS photometric catalog.
     """
 
     def __init__(self, service='SDSS') -> None:
-        """_summary_
+        """Initialize an instance of SDSSQuery.
 
         Parameters
         ----------
         service : str, optional
-            _description_, by default 'SDSS'
+            Web API used for the query, can be 'SDSS' (based on `astroquery.sdss.SDSS`) or 'CDS_XMATCH' (based on `astroquery.xmatch.XMatch`), by default 'SDSS'
 
         Raises
         ------
         NotImplementedError
-            _description_
+            Currently only 'SDSS' and 'CDS_XMATCH' are implemented.
         """
         service = service.upper()
         if 'CDS' in service:
@@ -37,28 +37,28 @@ class SDSSQuery():
 
 
     def upload_match(self, table_in, ra_col='ra', dec_col='dec', radius=2.0 * u.arcsec):
-        """_summary_
+        """Upload and crossmatch the local table with SDSS photometric catalog using coordinates.
 
         Parameters
         ----------
         table_in : astropy.table.Table object
-            _description_
+            The input table to be uploaded
         ra_col : str, optional
-            _description_, by default 'ra'
+            The column name of R.A. in `table_in`, by default 'ra'
         dec_col : str, optional
-            _description_, by default 'dec'
+            The column name of Decl. in `table_in`, by default 'dec'
         radius : astropy Quantity, optional
-            _description_, by default 2.0*u.arcsec
+            Radius for the crossmatch, by default 2.0*u.arcsec
 
         Returns
         -------
-        _type_
-            _description_
+        astropy.table.Table object
+            The joined table after crossmatch
 
         Raises
         ------
         KeyError
-            _description_
+            Raised when `ra_col`/`dec_col` is not found in the column names of the input table.
         """
         tb = Table(table_in)
         old_cols = tb.columns
