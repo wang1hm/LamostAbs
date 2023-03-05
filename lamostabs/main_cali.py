@@ -13,12 +13,6 @@ import CaliFlux
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d as sp_interp1d
 #from QSOFit import QSOFit
-COLOR = ['#5f160d','#d85c47','#cf4733','#f26c28','#f7986c','#f3b63e',
-       '#ffbb00','#fde24a','#fff988','#c5e127','#affd4a','#74d012',
-       '#d4ff78','#0baf46','#99f6d1','#30b494','#9ffcff','#22cdeb',
-       '#2bffe9','#7298c5','#176ab1','#2348e4','#888ad8','#3109cc',
-       '#b873f1','#8224f3','#e0aaf2','#f224f3','#eb89a8','#ef3762',
-       '#696969','#ff0030']
 
 data = pd.read_csv('./02_Calibration/dr45_match_file.csv',names=['basename','obsid','RA','DEC','psfMag_g',\
         'psfMag_r','psfMag_i','psfMag_z','psfMagErr_g','psfMagErr_r','psfMagErr_i','psfMagErr_z',\
