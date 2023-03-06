@@ -72,10 +72,10 @@ class SDSSQuery():
         except KeyError as e:
             raise KeyError("Column name(s) for ra and/or dec not found: {}, {}.".format(ra_col, dec_col))
         try:
-            coord = SkyCoord(ra=ra.value*u.deg, dec=dec.value*u.deg, frame='icrs')
+            coord = SkyCoord(ra=ra.data*u.deg, dec=dec.data*u.deg, frame='icrs')
         except TypeError as e_t:
-            ra_s = pd.Series(ra.value)
-            dec_s = pd.Series(dec.value)
+            ra_s = pd.Series(ra.data)
+            dec_s = pd.Series(dec.data)
             co_str = ra_s + ' ' + dec_s
             coord = SkyCoord(co_str, unit=(u.hourangle, u.deg), frame='icrs')
         if self.service == 'SDSS':
