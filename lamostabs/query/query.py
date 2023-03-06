@@ -6,6 +6,7 @@ from astropy.coordinates import SkyCoord
 from astroquery.xmatch import XMatch
 import os, warnings
 import pandas as pd
+import numpy as np
 
 
 class SDSSQuery():
@@ -61,7 +62,8 @@ class SDSSQuery():
             Raised when `ra_col`/`dec_col` is not found in the column names of the input table.
         """
         tb = Table(table_in)
-        old_cols = tb.columns
+        tb['upload_id'] = np.arange(len(tb))
+        old_cols = tb.colnames
         new_cols = [x.lower() for x in old_cols]
         tb.rename_columns(old_cols, new_cols)
         try:
@@ -78,15 +80,16 @@ class SDSSQuery():
             coord = SkyCoord(co_str, unit=(u.hourangle, u.deg), frame='icrs')
         if self.service == 'SDSS':
             from astroquery.sdss import SDSS
-            res = SDSS.query_crossid_async(coordinates=coord, radius=radius)
+            res = SDSS.query_crossid_async(coordinates=coord, radius=radius, obj_names=tb['upload_id'])
             res_tb = Table.read(res.text, format='ascii')
-            table_out = join(left=tb, right=res_tb)
+            table_out = join(left=tb, right=res_tb, keys_left='upload_id', keys_right='obj_id')
         elif self.service == 'CDS_XMATCH':
-            table = XMatch.query_async(cat1=tb,
+            res = XMatch.query_async(cat1=tb,
                                        cat2='vizier:V/147/sdss12',
                                        max_distance=radius, 
                                        colRA1=ra_col,
                                        colDec1=dec_col)
+            table = Table.read(res.text, format='ascii')
             table_out = table[table['mode']==1]
         self.table_out = table_out
         return table_out
