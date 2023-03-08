@@ -117,9 +117,9 @@ def RedBlue(mag,mag_err,z,photometry,name):
     flux_bin_i = f_fl(lam_bin_i)
     #flux_bin_z = f_fl(lam_bin_z)
 
-    SumFlux_g   = np.sum(RC_g_bin*flux_bin_g)/np.sum(RC_g_bin)
-    SumFlux_r   = np.sum(RC_r_bin*flux_bin_r)/np.sum(RC_r_bin)
-    SumFlux_i   = np.sum(RC_i_bin*flux_bin_i)/np.sum(RC_i_bin)
+    SumFlux_g   = np.sum(RC_g_bin*flux_bin_g*lam_bin)/np.sum(RC_g_bin*lam_bin)
+    SumFlux_r   = np.sum(RC_r_bin*flux_bin_r*lam_bin)/np.sum(RC_r_bin*lam_bin)
+    SumFlux_i   = np.sum(RC_i_bin*flux_bin_i*lam_bin)/np.sum(RC_i_bin*lam_bin)
     #SumFlux_z   = np.sum(RC_z_bin*flux_bin_z)/np.sum(RC_z_bin)
 
     #calculate the flux and error from mag to draw the cali_point
