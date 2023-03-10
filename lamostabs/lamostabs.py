@@ -30,8 +30,6 @@ class Filter():
 
 
 
-
-
 class CaliFlux():
     """A class for calibration of the flux"""
     def __init__(self, wave, flux, err, mag, emag, z=None, ra=None, dec=None, plateid=None, 
@@ -50,8 +48,6 @@ class CaliFlux():
             magnitude in g,r,i band
         emag : 1-D np.array
             error of magnitude in g,r,i band
-        effec_wave : 1-D np.array
-            effective wave of filters
         z : float, optional
             Redshift, by default None
         ra : float, optional
@@ -85,8 +81,24 @@ class CaliFlux():
         self.mjd = mjd
         self.fiberid = fiberid
 
-    def mag2flux(mag,emag,wave):
+    def mag2flux(mag,emag):
         """transform the magnitude into flux"""
-        flam = 10**(-0.4 * (mag + 2.406 + 5.*np.log10(wave)))
+        effec_wave = Filter.effec_wave
+        flam = 10**(-0.4 * (mag + 2.406 + 5.*np.log10(effec_wave)))
         eflam = flam * np.log(10.) * 0.4 * emag
         return flam,eflam
+
+    def fit_p_RedBlue(flux_fit,p0,p1):
+        """the fit function to optimize the calibration - RedBlue mode"""
+        res = np.zeros(3)
+        res[0]   = flux_fit[0]*p0
+        res[1:3] = np.array(flux_fit[1:3])*p1
+        return res
+        
+    def fit_p_Together(flux_fit,p):
+        """the fit function to optimize the calibration - RedBlue mode"""
+        res = np.zeros(3)
+        res = flux_fit * p
+        return res
+    
+    
