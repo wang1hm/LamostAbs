@@ -24,7 +24,7 @@ class Filter():
             responding constant of filters
         """
         self.effec_wave = self.effec_wave
-        self.wave = self.wave
+        self.lam = self.lam
         self.RC = self.RC
 
 
@@ -69,8 +69,8 @@ class CaliFlux():
         self.flux = np.asarray(flux, dtype=np.float64)
         self.err = np.asarray(err, dtype=np.float64)
         self.sn_obs = self.flux/self.err
-        self.mag = self.mag
-        self.emag = self.emag
+        self.mag = mag
+        self.emag = emag
         self.z = z
         self.and_mask = and_mask
         self.or_mask = or_mask
@@ -101,5 +101,9 @@ class CaliFlux():
         res = flux_fit * p
         return res
     
-    def RedBlue(flux,mag,mag_err,z,photometry,name):
+    def RedBlue(self):
         """the calibration code for RedBlue mode"""
+        psfMag_g,psfMag_r,psfMag_i,psfMag_z = self.mag[0],self.mag[1],self.mag[2],self.mag[3]
+        psfMagErr_g, psfMagErr_r, psfMagErr_i, psfMagErr_z = self.emag[0],self.emag[1],self.emag[2],self.emag[3]
+        lam_g, lam_r, lam_i, lam_z, RC_g, RC_r, RC_i, RC_z = Filter.lam[0],Filter.lam[1],Filter.lam[2],Filter.mag[3],Filter.RC[0],Filter.RC[1],Filter.RC[2],Filter.Rc[3]
+
