@@ -23,9 +23,9 @@ class Filter():
         RC : 3-D np.array
             responding constant of filters
         """
-        self.effec_wave = self.effec_wave
-        self.lam = self.lam
-        self.RC = self.RC
+        self.effec_wave = effec_wave
+        self.lam = lam
+        self.RC = RC
 
 
 
