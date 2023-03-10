@@ -81,11 +81,11 @@ class CaliFlux():
         self.mjd = mjd
         self.fiberid = fiberid
 
-    def mag2flux(mag,emag):
+    def mag2flux(self):
         """transform the magnitude into flux"""
         effec_wave = Filter.effec_wave
-        flam = 10**(-0.4 * (mag + 2.406 + 5.*np.log10(effec_wave)))
-        eflam = flam * np.log(10.) * 0.4 * emag
+        flam = 10**(-0.4 * (self.mag + 2.406 + 5.*np.log10(effec_wave)))
+        eflam = flam * np.log(10.) * 0.4 * self.emag
         return flam,eflam
 
     def fit_p_RedBlue(flux_fit,p0,p1):
@@ -101,4 +101,5 @@ class CaliFlux():
         res = flux_fit * p
         return res
     
-    
+    def RedBlue(flux,mag,mag_err,z,photometry,name):
+        """the calibration code for RedBlue mode"""
