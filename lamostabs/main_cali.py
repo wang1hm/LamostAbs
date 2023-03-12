@@ -24,12 +24,16 @@ for i in [5,6,7,8,9,10,11,12,15]:
     data.iloc[:,i]=pd.to_numeric(data.iloc[:,i])
 
 #pd.to_numeric(data.iloc[:,5])
-mag = data.iloc[0][5:9]
-mag_err = data.iloc[0][9:13]
-#p = data['redshift'][0]
-z = data['redshift'][0]
-photometry = data['Photometry'][0]
-name = data['basename'][0]
+spec_index=0
+mag = data.iloc[spec_index][5:9]
+mag_err = data.iloc[spec_index][9:13]
+#p = data['redshift'][spec_index]
+z = data['redshift'][spec_index]
+photometry = data['Photometry'][spec_index]
+name = data['basename'][spec_index]
 Res,arr_f1 = CaliFlux.RedBlue(mag,mag_err,z,photometry,str(name))
+
+
 plt.plot(Res[2],Res[0],zorder = 0)
 plt.scatter([4686.,6165.,7481.],arr_f1,c='r',zorder=1)
+
