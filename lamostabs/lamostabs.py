@@ -11,7 +11,7 @@ from scipy.optimize import curve_fit
 
 class Filter():
     """A class for the filter's property:"""
-    def __init__(self, effec_wave, lam, RC):
+    def __init__(self, effec_wave, lam, RC, photometry):
         """Initialize the Filter object
         
         Parameters
@@ -22,10 +22,17 @@ class Filter():
             lam_bin in filters
         RC : 3-D np.array
             responding constant of filters
+        photometry : str
+            magnitude from 'SDSS' or 'Panstarr'
         """
         self.effec_wave = effec_wave
         self.lam = lam
         self.RC = RC
+        self.photometry = photometry
+        if self.photometry == 'SDSS':
+            effec_wave = [4686.,6165.,7481.,8931.]
+        if self.photometry == 'Panstarr':
+            effec_wave = [4810.,6170.,7520.,8660.]
 
 
 class CaliFlux():
@@ -142,4 +149,25 @@ class CaliFlux():
         SumFlux_i   = np.sum(RC_i_bin*flux_bin_i*lam_bin_i)/np.sum(RC_i_bin*lam_bin_i)
         #SumFlux_z   = np.sum(RC_z_bin*flux_bin_z*lam_bin_z)/np.sum(RC_z_bin*lam_bin_z)
 
+        #calculate the flux and error from mag to draw the cali_point
+        arr_f1     = np.zeros(3)
+        arr_f1_err = np.zeros(3)
+        effec_wave = Filter.effec_wave
+        #calibrate the magnitude
+        if Filter.photometry == 'SDSS':
+            psfMag_g += 0.012
+            psfMag_r += 0.010
+            psfMag_i += 0.028
+        
+        arr_f1[0],arr_f1_err[0] = np.array(mag2flux(psfMag_g,psfMagErr_g,wave=effec_wave[0]))/1.0e-17
+        arr_f1[1],arr_f1_err[1] = np.array(mag2flux(psfMag_r,psfMagErr_r,wave=effec_wave[1]))/1.0e-17
+        arr_f1[2],arr_f1_err[2] = np.array(mag2flux(psfMag_i,psfMagErr_i,wave=effec_wave[2]))/1.0e-17
 
+        #curve_fit
+        params, err = curve_fit(cmd,[SumFlux_g,SumFlux_r,SumFlux_i], arr_f1, sigma = arr_f1_err)
+
+        index_blue = np.where(lam < 5900)
+        index_red = np.where(lam > 5900)
+        lam_red = lam[index_red]
+        lam_blue = lam[index_blue]
+    
