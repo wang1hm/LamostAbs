@@ -157,7 +157,7 @@ def RedBlue(mag,mag_err,z,photometry,name):
     Res_flux = np.hstack((flux[index_blue]*params[0],flux[index_red]*params[1]))
     #make the S/N in red part same with the blue part
     #Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[1]**2.)))
-    Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[0]**2.)))
+    Res_ivar = np.hstack((ivar[index_blue]/(params[0]**2.),ivar[index_red]/(params[1]**2.)))
     #Res_ivar = np.hstack((ivar[index_blue],ivar[index_red]))
     #Res_ivar = [ivar[index_blue]/(params[0]^2.),ivar[index_red]/(params[1]^2.)]
     index_ivar0 = np.where(Res_ivar == 0)
