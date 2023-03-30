@@ -255,7 +255,7 @@ def Together(mag,mag_err,z,photometry,name):
     #arr_f1[3],arr_f1_err[3] = np.array(mag2flux(psfMag_z+0.040,psfMagErr_z,wave=effec_wave[3]))/1.0e-17
    	
     #curve_fit
-    params, err = curve_fit(cmd,[SumFlux_g,SumFlux_r,SumFlux_i], arr_f1, sigma = arr_f1_err)
+    params, err = curve_fit(cmd_together,[SumFlux_g,SumFlux_r,SumFlux_i], arr_f1, sigma = arr_f1_err)
 
     index_blue = np.where(lam < 5900)
     index_red = np.where(lam > 5900)
